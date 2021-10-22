@@ -1,8 +1,10 @@
 import express from "express";
-import { signUp } from "./controllers/signUp.js";
+import { signUp, signIn } from "./controllers/usersController.js";
 
 const app = express();
 app.use(express.json());
 
 app.post("/sign-up", signUp);
-app.listen(4000);
+app.post("/sign-in", signIn);
+
+export default app;
