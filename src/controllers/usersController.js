@@ -1,6 +1,5 @@
 import connection from "../connection.js";
-import { usersSchema } from "../validations.js";
-import joi from "joi";
+import usersSchema from "../validations/users.js";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 
