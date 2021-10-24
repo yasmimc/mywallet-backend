@@ -45,20 +45,28 @@ async function signIn(req, res) {
 
 		const user = result.rows[0];
 
-		if (bcrypt.compareSync(password, user?.password)) {
-			const token = uuid();
-			await connection.query(
-				`INSERT INTO sessions ("userId", token) 
-				VALUES ($1, $2)`,
-				[user.id, token]
-			);
-
-			res.status(200).send({
-				token,
-			});
-		} else {
-			res.sendStatus(401);
+		if (!user) {
+			res.send(404);
+			return;
 		}
+
+		if (!bcrypt.compareSync(password, user.password)) {
+			res.sendStatus(401);
+			return;
+		}
+
+		const token = uuid();
+		await connection.query(
+			`INSERT INTO sessions ("userId", token) 
+				VALUES ($1, $2)`,
+			[user.id, token]
+		);
+
+		res.status(200).send({
+			name: user.name,
+			token,
+		});
+		return;
 	} catch (error) {
 		console.log(error);
 		res.sendStatus(500);
