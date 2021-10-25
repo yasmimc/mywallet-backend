@@ -26,7 +26,7 @@ async function signUp(req, res) {
 			`INSERT INTO users (name, email, password) VALUES ($1, $2, $3)`,
 			[name, email, passwordHash]
 		);
-		res.sendStatus(201);
+		const result = res.sendStatus(201);
 	} catch (error) {
 		console.log(error.message);
 		res.sendStatus(500);
@@ -45,13 +45,12 @@ async function signIn(req, res) {
 		const user = result.rows[0];
 
 		if (!user) {
-			res.status(404).send({});
-
+			res.send(404);
 			return;
 		}
 
 		if (!bcrypt.compareSync(password, user.password)) {
-			res.status(401).send({});
+			res.sendStatus(401);
 			return;
 		}
 

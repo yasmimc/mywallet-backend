@@ -13,7 +13,7 @@ describe("GET /transactions", () => {
 
 	afterEach(async () => {
 		await connection.query(`INSERT INTO users (name, email, password)
-		VALUES ('Nome', 'email@email.com', '$2b$10$XmHfVQcA6q.L4/SZzLfn1.D22qu792BOol9zEIEQncdRsgVjVTU.G');`);
+		VALUES ('Nome', 'email@email.com', '$2b$10$MVJslBMOQVhjPiw/HX1gGO8cr3dyYukWkRS53V6acs9ohcVoru0OC');`);
 		const user = await connection.query(
 			`SELECT id FROM users WHERE email = 'email@email.com';`
 		);
@@ -31,7 +31,6 @@ describe("GET /transactions", () => {
 			.set("Authorization", `Bearer ${token}`);
 		const status = result.status;
 		const resp = result.body;
-		console.log(resp);
 		expect(status).toEqual(401);
 	});
 
@@ -41,7 +40,6 @@ describe("GET /transactions", () => {
 			.set("Authorization", `Bearer ${token}`);
 		const status = result.status;
 		const resp = result.body;
-		console.log(resp);
 		expect(status).toEqual(200);
 	});
 });

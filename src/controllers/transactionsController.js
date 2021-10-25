@@ -53,7 +53,7 @@ async function getTransactions(req, res) {
 		);
 		res.status(200).send(transactions.rows);
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 		res.sendStatus(500);
 	}
 }
@@ -87,7 +87,7 @@ async function setTransaction(req, res) {
 
 		res.sendStatus(201);
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 		res.sendStatus(500);
 	}
 }

@@ -9,14 +9,14 @@ describe("POST /sign-up", () => {
 
 	afterEach(async () => {
 		await connection.query(`INSERT INTO users (name, email, password)
-		VALUES ('Nome', 'email@email.com', '123456');`);
+		VALUES ('Nome', 'email@email.com', '123qweASD@');`);
 	});
 
 	it("returns 201 for new user with valid params", async () => {
 		const body = {
 			name: "Nome",
 			email: "email@email.com",
-			password: "123456",
+			password: "123qweASD@",
 		};
 
 		const result = await supertest(app).post("/sign-up").send(body);
@@ -29,7 +29,7 @@ describe("POST /sign-up", () => {
 		const body = {
 			name: "Nome",
 			email: "email@email.com",
-			password: "123456",
+			password: "123qweASD@",
 		};
 
 		const result = await supertest(app).post("/sign-up").send(body);
@@ -41,7 +41,7 @@ describe("POST /sign-up", () => {
 	it("returns 400 for invalid user", async () => {
 		const body = {
 			name: "Nome",
-			password: "123456",
+			password: "123qweASD@",
 		};
 
 		const result = await supertest(app).post("/sign-up").send(body);
@@ -56,13 +56,13 @@ describe("POST /sign-in", () => {
 		await connection.query(`DELETE FROM users`);
 		await connection.query(`DELETE FROM sessions`);
 		await connection.query(`INSERT INTO users (name, email, password)
-		VALUES ('Nome', 'email@email.com', '$2b$10$5x6Ofe5c9rViKgZGVAONHOsUUivKUft6uKwtT1lUBw8jVHjtxpCk6');`);
+		VALUES ('Nome', 'email@email.com', '$2b$10$MVJslBMOQVhjPiw/HX1gGO8cr3dyYukWkRS53V6acs9ohcVoru0OC');`);
 	});
 
 	it("returns 200 for successed loggin", async () => {
 		const body = {
 			email: "email@email.com",
-			password: "123456",
+			password: "123qweASD@",
 		};
 
 		const result = await supertest(app).post("/sign-in").send(body);
@@ -76,7 +76,7 @@ describe("POST /sign-in", () => {
 	it("returns 404 for non existent user", async () => {
 		const body = {
 			email: "emaillll@email.com",
-			password: "123456",
+			password: "123qweASD@",
 		};
 
 		const result = await supertest(app).post("/sign-in").send(body);
