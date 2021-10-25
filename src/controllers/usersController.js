@@ -62,7 +62,10 @@ async function signIn(req, res) {
 		);
 
 		res.status(200).send({
-			name: user.name,
+			user: {
+				name: user.name,
+				id: user.id,
+			},
 			token,
 		});
 		return;

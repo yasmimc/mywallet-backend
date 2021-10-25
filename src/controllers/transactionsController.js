@@ -59,10 +59,9 @@ async function setTransaction(req, res) {
 	try {
 		const resp = await validateToken(req);
 		if (resp.error) {
-			res.sendStatus(token.error);
+			res.sendStatus(resp.error);
 			return;
 		}
-		const token = resp.token;
 
 		const validation = transactionsSchema.validate(req.body);
 		if (validation.error) {
@@ -70,15 +69,15 @@ async function setTransaction(req, res) {
 			return;
 		}
 
-		const { value, type } = req.body;
-
-		const realValue = type === 1 ? value : -value;
+		const { value, description, type } = req.body;
+		const valueInCents = parseFloat(value.replace(",", ""));
+		const realValue = type === 1 ? valueInCents : -valueInCents;
 
 		await connection.query(
 			`
-            INSERT INTO transactions ("userId", value, type) 
-            VALUES ($1, $2, $3);`,
-			[resp.userId, realValue, type]
+            INSERT INTO transactions ("userId", value, type, description) 
+            VALUES ($1, $2, $3, $4);`,
+			[resp.userId, realValue, type, description]
 		);
 
 		res.sendStatus(201);
