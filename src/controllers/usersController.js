@@ -45,12 +45,13 @@ async function signIn(req, res) {
 		const user = result.rows[0];
 
 		if (!user) {
-			res.send(404);
+			res.status(404).send({});
+
 			return;
 		}
 
 		if (!bcrypt.compareSync(password, user.password)) {
-			res.sendStatus(401);
+			res.status(401).send({});
 			return;
 		}
 
