@@ -1,4 +1,4 @@
-import connection from "../connection.js";
+import connection from "../database/connection.js";
 import transactionsSchema from "../validations/transactions.js";
 
 async function validateToken(req) {

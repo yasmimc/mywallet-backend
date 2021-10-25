@@ -1,9 +1,9 @@
 import app from "../src/app.js";
 import supertest from "supertest";
-import connection from "../src/connection.js";
+import connection from "../src/database/connection.js";
 
 describe("POST /sign-up", () => {
-	beforeAll(async () => {
+	afterAll(async () => {
 		await connection.query(`DELETE FROM users`);
 	});
 
@@ -36,6 +36,18 @@ describe("POST /sign-up", () => {
 		const status = result.status;
 
 		expect(status).toEqual(409);
+	});
+
+	it("returns 400 for invalid user", async () => {
+		const body = {
+			name: "Nome",
+			password: "123456",
+		};
+
+		const result = await supertest(app).post("/sign-up").send(body);
+		const status = result.status;
+
+		expect(status).toEqual(400);
 	});
 });
 

@@ -1,4 +1,4 @@
-import connection from "../connection.js";
+import connection from "../database/connection.js";
 import usersSchema from "../validations/users.js";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
@@ -26,9 +26,9 @@ async function signUp(req, res) {
 			`INSERT INTO users (name, email, password) VALUES ($1, $2, $3)`,
 			[name, email, passwordHash]
 		);
-		const result = res.sendStatus(201);
+		res.sendStatus(201);
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 		res.sendStatus(500);
 	}
 }
@@ -70,7 +70,7 @@ async function signIn(req, res) {
 		});
 		return;
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 		res.sendStatus(500);
 	}
 }

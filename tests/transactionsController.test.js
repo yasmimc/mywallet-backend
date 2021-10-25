@@ -1,9 +1,9 @@
 import app from "../src/app.js";
 import supertest from "supertest";
-import connection from "../src/connection.js";
+import connection from "../src/database/connection.js";
 
 describe("GET /transactions", () => {
-	beforeAll(async () => {
+	afterAll(async () => {
 		await connection.query(`DELETE FROM sessions`);
 		await connection.query(`DELETE FROM users`);
 		await connection.query(`DELETE FROM transactions`);
@@ -11,7 +11,7 @@ describe("GET /transactions", () => {
 
 	const token = "53164764-b457-4e36-bd41-89d9d7a7a7cd";
 
-	beforeEach(async () => {
+	afterEach(async () => {
 		await connection.query(`INSERT INTO users (name, email, password)
 		VALUES ('Nome', 'email@email.com', '$2b$10$XmHfVQcA6q.L4/SZzLfn1.D22qu792BOol9zEIEQncdRsgVjVTU.G');`);
 		const user = await connection.query(
@@ -25,11 +25,23 @@ describe("GET /transactions", () => {
 		);
 	});
 
+	it("returns 401 when session doesn't exists", async () => {
+		const result = await supertest(app)
+			.get("/transactions")
+			.set("Authorization", `Bearer ${token}`);
+		const status = result.status;
+		const resp = result.body;
+		console.log(resp);
+		expect(status).toEqual(401);
+	});
+
 	it("returns 200 and user transactions when session exists", async () => {
 		const result = await supertest(app)
 			.get("/transactions")
 			.set("Authorization", `Bearer ${token}`);
 		const status = result.status;
+		const resp = result.body;
+		console.log(resp);
 		expect(status).toEqual(200);
 	});
 });
