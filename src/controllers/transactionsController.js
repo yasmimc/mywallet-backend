@@ -38,13 +38,16 @@ async function getTransactions(req, res) {
 			`SELECT 
                 transactions.id, 
                 transactions.value, 
+                transactions.description,
+                transactions.date,
                 "transactionsTypes".name as "type"
             FROM sessions 
             JOIN transactions 
                 ON sessions."userId" = transactions."userId" 
             JOIN "transactionsTypes"
                 ON transactions.type = "transactionsTypes".id
-            WHERE token = $1;
+            WHERE token = $1
+            ORDER BY transactions.id;
             `,
 			[resp.token]
 		);
@@ -73,11 +76,13 @@ async function setTransaction(req, res) {
 		const valueInCents = parseFloat(value.replace(",", ""));
 		const realValue = type === 1 ? valueInCents : -valueInCents;
 
+		const today = new Date().toISOString();
+
 		await connection.query(
 			`
-            INSERT INTO transactions ("userId", value, type, description) 
-            VALUES ($1, $2, $3, $4);`,
-			[resp.userId, realValue, type, description]
+            INSERT INTO transactions ("userId", value, type, description, date) 
+            VALUES ($1, $2, $3, $4, $5);`,
+			[resp.userId, realValue, type, description, today]
 		);
 
 		res.sendStatus(201);

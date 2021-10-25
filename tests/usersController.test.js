@@ -54,12 +54,11 @@ describe("POST /sign-in", () => {
 		};
 
 		const result = await supertest(app).post("/sign-in").send(body);
-		console.log(result.text);
 		const status = result.statusCode;
-		const resp = result.text;
+		const resp = result.body;
 
 		expect(status).toEqual(200);
-		// expect(resp).toHaveProperty("token");
+		expect(resp).toHaveProperty("token");
 	});
 
 	it("returns 404 for non existent user", async () => {
