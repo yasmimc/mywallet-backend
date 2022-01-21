@@ -258,3 +258,4 @@ SELECT pg_catalog.setval('public.users_id_seq', 598, true);
 --
 -- PostgreSQL database dump complete
 --
+INSERT INTO "transactionsTypes" (name) VALUES ('Income'), ('Outcome');
