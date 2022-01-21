@@ -54,6 +54,20 @@ Launches the test runner in the sequencial mode.
 
 Launches the test runner in the interactive watch mode.
 
-### Deployment
+## Deployment
 
-This api is deployed on Heroku, you can visit it by accessing this [url](https://gratibox-project.herokuapp.com/).
+This api is deployed on Heroku, you can visit it by accessing this [url](https://mywallet-project.herokuapp.com/).
+
+## Routes
+
+### POST /sign-up
+Recives a JSON with name, email and password. The name must be greater than 3 caracters, the email must be valid and the password must have at least 8 characters, containing number, special character, upper and lower case letters.
+
+### POST /sign-in
+Receives a JSON with email and password and returns a Bearer token if login is successful.
+
+### GET /transactions
+Receives a header authorization with a valid Bearer token.
+
+### POST /transactions
+Receives a JSON with userId, type, value and description. Besides that, receives a header authorization with a valid Bearer token.
